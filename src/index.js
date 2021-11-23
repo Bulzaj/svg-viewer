@@ -1,6 +1,11 @@
 import React from 'react'
-import styles from './styles.module.css'
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
+const SvgViewer = () => {
+  return (
+    <svg>
+      <g id='view-box'></g>
+    </svg>
+  )
 }
+
+export default SvgViewer
