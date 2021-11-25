@@ -1,11 +1,3 @@
-import React from 'react'
-
-const SvgViewer = () => {
-  return (
-    <svg>
-      <g id='view-box'></g>
-    </svg>
-  )
-}
+import SvgViewer from './svg-viewer/svg-viewer'
 
 export default SvgViewer
