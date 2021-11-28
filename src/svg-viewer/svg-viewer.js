@@ -3,7 +3,8 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef
+  useRef,
+  useState
 } from 'react'
 import NavigationPane from '../navigation-pane/navigation-pane'
 import { pan, zoom } from '../utils'
@@ -46,6 +47,7 @@ const SvgViewer = (props) => {
     viewboxWidth: 0,
     viewboxHeight: 0
   })
+  const [isPanning, setIsPanning] = useState(false)
 
   const svgElRef = useRef()
 
@@ -117,6 +119,27 @@ const SvgViewer = (props) => {
     })
   }, [])
 
+  const mouseDownHandler = () => {
+    setIsPanning(true)
+  }
+
+  const mouseMoveHandler = (e) => {
+    if (!isPanning) return
+
+    const dx = !props.invertXPanning ? e.movementX : -e.movementX
+    const dy = !props.invertYPanning ? e.movementY : -e.movementY
+
+    dispatch({
+      type: 'PAN',
+      dx: dx,
+      dy: dy
+    })
+  }
+
+  const mouseUpHandler = () => {
+    setIsPanning(false)
+  }
+
   let displayData = (
     <text x='50%' y='50%'>
       No SVG data provided
@@ -151,6 +174,9 @@ const SvgViewer = (props) => {
         width={props.width}
         height={props.height}
         viewBox={`0 0 ${state.viewboxWidth} ${state.viewboxHeight}`}
+        onMouseDown={mouseDownHandler}
+        onMouseMove={mouseMoveHandler}
+        onMouseUp={mouseUpHandler}
       >
         <g id='root-group' transform={`matrix(${state.transformMatrix})`}>
           {displayData}
@@ -169,7 +195,9 @@ SvgViewer.defaultProps = {
     show: true,
     panDelta: PAN_DELTA,
     zoomFactor: ZOOM_FACTOR
-  }
+  },
+  invertXPanning: false,
+  incertYPanning: false
 }
 
 export default SvgViewer
