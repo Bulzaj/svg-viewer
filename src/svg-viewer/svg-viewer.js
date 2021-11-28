@@ -126,10 +126,13 @@ const SvgViewer = (props) => {
   const mouseMoveHandler = (e) => {
     if (!isPanning) return
 
+    const dx = !props.invertXPanning ? e.movementX : -e.movementX
+    const dy = !props.invertYPanning ? e.movementY : -e.movementY
+
     dispatch({
       type: 'PAN',
-      dx: e.movementX,
-      dy: e.movementY
+      dx: dx,
+      dy: dy
     })
   }
 
@@ -192,7 +195,9 @@ SvgViewer.defaultProps = {
     show: true,
     panDelta: PAN_DELTA,
     zoomFactor: ZOOM_FACTOR
-  }
+  },
+  invertXPanning: false,
+  incertYPanning: false
 }
 
 export default SvgViewer
