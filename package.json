@@ -49,8 +49,5 @@
   },
   "files": [
     "dist"
-  ],
-  "dependencies": {
-    "react-icons": "^4.3.1"
-  }
+  ]
 }

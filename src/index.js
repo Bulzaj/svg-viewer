@@ -1,3 +1,6 @@
-import SvgViewer from './svg-viewer/svg-viewer'
+import React from 'react'
+import styles from './styles.module.css'
 
-export default SvgViewer
+export const ExampleComponent = ({ text }) => {
+  return <div className={styles.test}>Example Component: {text}</div>
+}
