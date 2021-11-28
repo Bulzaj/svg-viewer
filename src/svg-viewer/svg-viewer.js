@@ -20,6 +20,16 @@ const transformMatrixReducer = (state, action) => {
         ...state,
         transformMatrix: pan(action.dx, action.dy, state.transformMatrix)
       }
+    case 'ZOOM':
+      return {
+        ...state,
+        transformMatrix: zoom(
+          action.scaleDelta,
+          action.x,
+          action.y,
+          state.transformMatrix
+        )
+      }
     case 'ZOOM_TO_CENTER':
       return {
         ...state,
@@ -124,6 +134,7 @@ const SvgViewer = (props) => {
   }
 
   const mouseMoveHandler = (e) => {
+    e.preventDefault()
     if (!isPanning) return
 
     const dx = !props.invertXPanning ? e.movementX : -e.movementX
@@ -138,6 +149,30 @@ const SvgViewer = (props) => {
 
   const mouseUpHandler = () => {
     setIsPanning(false)
+  }
+
+  const mouseWheelHandler = (e) => {
+    const x = e.clientX
+    const y = e.clientY
+
+    let scaleDelta =
+      e.deltaY > 0
+        ? props.navigationPane.zoomFactor
+        : 1 / props.navigationPane.zoomFactor
+
+    if (props.invertZooming) {
+      scaleDelta =
+        e.deltaY > 0
+          ? 1 / props.navigationPane.zoomFactor
+          : props.navigationPane.zoomFactor
+    }
+
+    dispatch({
+      type: 'ZOOM',
+      scaleDelta,
+      x,
+      y
+    })
   }
 
   let displayData = (
@@ -177,6 +212,7 @@ const SvgViewer = (props) => {
         onMouseDown={mouseDownHandler}
         onMouseMove={mouseMoveHandler}
         onMouseUp={mouseUpHandler}
+        onWheel={mouseWheelHandler}
       >
         <g id='root-group' transform={`matrix(${state.transformMatrix})`}>
           {displayData}
@@ -197,7 +233,8 @@ SvgViewer.defaultProps = {
     zoomFactor: ZOOM_FACTOR
   },
   invertXPanning: false,
-  incertYPanning: false
+  incertYPanning: false,
+  invertZooming: false
 }
 
 export default SvgViewer
