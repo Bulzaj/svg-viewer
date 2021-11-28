@@ -155,10 +155,17 @@ const SvgViewer = (props) => {
     const x = e.clientX
     const y = e.clientY
 
-    const scaleDelta =
+    let scaleDelta =
       e.deltaY > 0
         ? props.navigationPane.zoomFactor
         : 1 / props.navigationPane.zoomFactor
+
+    if (props.invertZooming) {
+      scaleDelta =
+        e.deltaY > 0
+          ? 1 / props.navigationPane.zoomFactor
+          : props.navigationPane.zoomFactor
+    }
 
     dispatch({
       type: 'ZOOM',
@@ -226,7 +233,8 @@ SvgViewer.defaultProps = {
     zoomFactor: ZOOM_FACTOR
   },
   invertXPanning: false,
-  incertYPanning: false
+  incertYPanning: false,
+  invertZooming: false
 }
 
 export default SvgViewer
