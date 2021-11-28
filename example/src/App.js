@@ -1,17 +1,10 @@
 import React from 'react'
+
+import { ExampleComponent } from 'svg-viewer'
 import 'svg-viewer/dist/index.css'
 
-import OilRafinerySvg from './oil-rafinery-svg'
-
-import SvgViewer from 'svg-viewer'
-import classes from './app.module.css'
-
 const App = () => {
-  return (
-    <div className={classes.container}>
-      <SvgViewer svgData={OilRafinerySvg} />
-    </div>
-  )
+  return <ExampleComponent text="Create React Library Example 😄" />
 }
 
 export default App
